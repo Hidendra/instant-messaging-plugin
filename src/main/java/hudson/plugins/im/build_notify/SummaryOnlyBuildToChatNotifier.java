@@ -36,9 +36,27 @@ public class SummaryOnlyBuildToChatNotifier extends BuildToChatNotifier {
         } else {
             sb = new StringBuilder();
         }
+        
+        ResultTrend trend = ResultTrend.getResultTrend(build);
+        String status;
+        
+        switch (trend) {
+            case SUCCESS:
+            case FIXED:
+                status = "\u0002\u000303BUILD SUCCESS!\u000f";
+                status = "\u0002\u000303BUILD SUCCESS!\u000f";
+                break;
+            case FAILURE:
+                status = "\u0002\u000304FAILED\u000f";
+                break;
+        
+            default:
+                status = "\u0002\u000308" + trend.getID() + "\u000f";
+        }
+        
         sb.append(Messages.SummaryOnlyBuildToChatNotifier_Summary(
                 getProjectName(build), build.getDisplayName(),
-                ResultTrend.getResultTrend(build).getID(),
+                status,
                 build.getTimestampString(),
                 MessageHelper.getBuildURL(build)));
 
